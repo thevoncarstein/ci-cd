@@ -8,9 +8,28 @@ public class BuildScript
     public static void BuildWindows()
     {
         var scenes = EditorBuildSettings.scenes;
+
+        string buildPath = string.Empty;
+        var args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i].Equals("-buildPath"))
+            {
+                buildPath = args[i + 1];
+                break;
+            }
+        }
+
+        string name = Application.productName;
+        string version = Application.version;
+        string datetime = DateTime.Now.ToString("ddMM.HHmm");
+        string extension = ".exe";
+
+        buildPath += $"{name}_{version}_{datetime}{extension}";
+
         BuildPipeline.BuildPlayer(
             scenes,
-            "C:\\Users\\Admin\\Downloads\\Builds\\CMDBuilds\\Windows\\Build.exe",
+            buildPath,
             BuildTarget.StandaloneWindows64,
             BuildOptions.None
             );
